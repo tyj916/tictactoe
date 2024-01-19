@@ -11,9 +11,20 @@ function createGameboard(row = 3, col = 3) {
   }
 
   const getGameboard = () => gameboard;
+  const displayGameboardConsole = () => {
+    const arr = [];
+    for (let i = 0; i < row; i++) {
+      arr[i] = [];
+      for(let j = 0; j < col; j++) {
+        arr[i].push(gameboard[i][j].getMark());
+      }
+    }
+    console.log(arr);
+  };
 
   return {
     getGameboard,
+    displayGameboardConsole,
   }
 }
 
