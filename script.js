@@ -50,7 +50,7 @@ function createPlayer(name, mark) {
   }
 }
 
-function startGame(p1 = "Player 1", p2 = "Player 2") {
+function gameController(p1 = "Player 1", p2 = "Player 2") {
   const gameboard = createGameboard();
 
   const player1 = createPlayer(p1, "X");
@@ -78,4 +78,4 @@ function startGame(p1 = "Player 1", p2 = "Player 2") {
 
 const gb = createGameboard();
 const player = createPlayer("Player 1", "X");
-const game = startGame();
+const game = gameController();
