@@ -70,7 +70,17 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
   }
 
   function playRound() {
+    // display current gameboard
+    gameboard.displayGameboardConsole();
+    // get selection from curentplayer
+    const selectedRow = +prompt('Which row you want to place (0~2)');
+    const selectedCol = +prompt('Which column you want to place? (0~2)');
+    // place mark on selection
+    gameboard.placeMark(selectedRow, selectedCol, currentPlayer.getMark());
+    // check win condition
 
+    // switch player
+    switchCurrentPlayer();
   }
 
   return {
