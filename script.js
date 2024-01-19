@@ -22,9 +22,14 @@ function createGameboard(row = 3, col = 3) {
     console.log(arr);
   };
 
+  function placeMark(row, column, mark) {
+    gameboard[row][column].setMark(mark);
+  }
+
   return {
     getGameboard,
     displayGameboardConsole,
+    placeMark,
   }
 }
 
