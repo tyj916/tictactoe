@@ -11,6 +11,7 @@ function createGameboard(row = 3, col = 3) {
   }
 
   const getGameboard = () => gameboard;
+
   const displayGameboardConsole = () => {
     const arr = [];
     for (let i = 0; i < row; i++) {
@@ -26,10 +27,38 @@ function createGameboard(row = 3, col = 3) {
     gameboard[row][column].setMark(mark);
   }
 
+  function matchThree(row) {
+    return row.every((cell) => cell.getMark() === 'X' || cell.getMark() === 'O');
+  }
+
+  function checkWinCondition() {
+    const allRows = [];
+
+    // check for each row
+    for (let i = 0; i < row; i++) {
+      allRows.push(gameboard[i]);
+    }
+
+    // check for each column
+    for (let i = 0; i < col; i++) {
+      // convert gameboard cols to rows
+      const col = gameboard.map(row => row[i]);
+      allRows.push(col);
+    }
+
+    // check diagonal rows
+    allRows.push([gameboard[0][0],gameboard[1][1],gameboard[2][2]],
+                 [gameboard[0][2],gameboard[1][1],gameboard[2][0]]);
+
+    // check if any rows in gameboard has 3 mark matched in a row
+    return allRows.map(matchThree);
+  }
+
   return {
     getGameboard,
     displayGameboardConsole,
     placeMark,
+    checkWinCondition,
   }
 }
 
