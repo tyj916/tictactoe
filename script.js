@@ -66,11 +66,17 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
 
   const getCurrentPlayer = () => currentPlayer.getName();
 
+  function displayCurrentPlayer() {
+    console.log(`It's ${currentPlayer.getName()}'s turn. Mark: ${currentPlayer.getMark()}`);
+  }
+
   function switchCurrentPlayer() {
     currentPlayer = currentPlayer === players[0] ? players[1] : players[2];
   }
 
   function playRound() {
+    // display current player
+    displayCurrentPlayer();
     // get selection from curentplayer
     const selectedRow = +prompt('Which row you want to place (0~2)');
     const selectedCol = +prompt('Which column you want to place? (0~2)');
@@ -86,6 +92,7 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
 
   return {
     getCurrentPlayer,
+    displayCurrentPlayer,
     switchCurrentPlayer,
     playRound,
   }
