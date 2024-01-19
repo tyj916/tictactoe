@@ -17,4 +17,15 @@ function createGameboard(row = 3, col = 3) {
   }
 }
 
+function createPlayer(name, mark) {
+  const getName = () => name;
+  const getMark = () => mark;
+  
+  return {
+    getName,
+    getMark,
+  }
+}
+
 const gb = createGameboard();
+const player1 = createPlayer("Player 1", "X");
