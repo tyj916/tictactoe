@@ -18,7 +18,7 @@ function createGameboard(row = 3, col = 3) {
 }
 
 function createCell() {
-  const cell = "";
+  let cell = "";
 
   const getMark = () => cell;
   const setMark = (mark) => cell = mark;
