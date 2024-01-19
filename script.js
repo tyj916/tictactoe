@@ -6,7 +6,7 @@ function createGameboard(row = 3, col = 3) {
   for (let i = 0; i < row; i++) {
     gameboard.push([]);
     for(let j = 0; j < col; j++) {
-      gameboard[i].push("");
+      gameboard[i].push(createCell());
     }
   }
 
@@ -15,6 +15,18 @@ function createGameboard(row = 3, col = 3) {
   return {
     getGameboard,
   }
+}
+
+function createCell() {
+  const cell = "";
+
+  const getMark = () => cell;
+  const setMark = (mark) => cell = mark;
+
+  return {
+    getMark,
+    setMark,
+  };
 }
 
 function createPlayer(name, mark) {
@@ -42,7 +54,7 @@ function startGame(p1 = "Player 1", p2 = "Player 2") {
   }
 
   function playRound() {
-    
+
   }
 
   return {
