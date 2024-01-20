@@ -28,7 +28,8 @@ function createGameboard(row = 3, col = 3) {
   }
 
   function matchThree(row) {
-    return row.every((cell) => cell.getMark() === 'X' || cell.getMark() === 'O');
+    const isMatched = row.every((cell) => cell.getMark() === 'X') || row.every((cell) => cell.getMark() === 'O');
+    return isMatched;
   }
 
   function isGameover() {
