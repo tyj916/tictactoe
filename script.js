@@ -68,10 +68,12 @@ function createCell() {
 
   const getMark = () => cell;
   const setMark = (mark) => cell = mark;
+  const hasMark = () => Boolean(cell);
 
   return {
     getMark,
     setMark,
+    hasMark,
   };
 }
 
@@ -113,8 +115,14 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
   function playRound() {
     displayCurrentPlayer();
     // get selection from curentplayer
-    const selectedRow = +prompt('Which row you want to place (0~2)');
-    const selectedCol = +prompt('Which column you want to place? (0~2)');
+    let selectedRow = +prompt('Which row you want to place (0~2)');
+    let selectedCol = +prompt('Which column you want to place? (0~2)');
+
+    while (gameboard.getGameboard()[selectedRow][selectedCol].hasMark()) {
+      console.log("The cell is selected. Please select again");
+      selectedRow = +prompt('Which row you want to place (0~2)');
+      selectedCol = +prompt('Which column you want to place? (0~2)');
+    }
 
     gameboard.placeMark(selectedRow, selectedCol, currentPlayer.getMark());
     gameboard.displayGameboardConsole();
