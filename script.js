@@ -31,7 +31,7 @@ function createGameboard(row = 3, col = 3) {
     return row.every((cell) => cell.getMark() === 'X' || cell.getMark() === 'O');
   }
 
-  function checkWinCondition() {
+  function isGameover() {
     const allRows = [];
 
     // check for each row
@@ -51,14 +51,14 @@ function createGameboard(row = 3, col = 3) {
                  [gameboard[0][2],gameboard[1][1],gameboard[2][0]]);
 
     // check if any rows in gameboard has 3 mark matched in a row
-    return allRows.map(matchThree);
+    return allRows.map(matchThree).includes(true);
   }
 
   return {
     getGameboard,
     displayGameboardConsole,
     placeMark,
-    checkWinCondition,
+    isGameover,
   }
 }
 
@@ -84,6 +84,7 @@ function createPlayer(name, mark) {
   }
 }
 
+// Rules: Only game controller, no game rules
 function gameController(p1 = "Player 1", p2 = "Player 2") {
   const gameboard = createGameboard();
   gameboard.displayGameboardConsole();
@@ -104,18 +105,18 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
   }
 
   function playRound() {
-    // display current player
     displayCurrentPlayer();
     // get selection from curentplayer
     const selectedRow = +prompt('Which row you want to place (0~2)');
     const selectedCol = +prompt('Which column you want to place? (0~2)');
-    // place mark on selection
-    gameboard.placeMark(selectedRow, selectedCol, currentPlayer.getMark());
-    // display gameboard
-    gameboard.displayGameboardConsole();
-    // check win condition
 
-    // switch player
+    gameboard.placeMark(selectedRow, selectedCol, currentPlayer.getMark());
+    gameboard.displayGameboardConsole();
+
+    if (gameboard.isGameover()) {
+      console.log(`Gameover. The winner is ${currentPlayer.getName()}`);
+    }
+    
     switchCurrentPlayer();
   }
 
