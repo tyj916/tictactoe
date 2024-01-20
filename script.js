@@ -32,7 +32,7 @@ function createGameboard(row = 3, col = 3) {
     return isMatched;
   }
 
-  function isGameover() {
+  function hasWinner() {
     const allRows = [];
 
     // check for each row
@@ -59,7 +59,7 @@ function createGameboard(row = 3, col = 3) {
     getGameboard,
     displayGameboardConsole,
     placeMark,
-    isGameover,
+    hasWinner,
   }
 }
 
@@ -97,11 +97,6 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
   const players = [player1, player2];
   let currentPlayer = players[0].getMark() === "X" ? players[0] : players[1];
 
-    // if (gameboard.isGameover()) {
-    //   console.log(`Gameover. The winner is ${currentPlayer.getName()}`);
-    //   break;
-    // }
-
   const getCurrentPlayer = () => currentPlayer.getName();
 
   function displayCurrentPlayer() {
@@ -131,11 +126,19 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
   }
 
   function startGame() {
-    while (!gameboard.isGameover()) {
+    let roundCount = 1;
+    while (!gameboard.hasWinner() && roundCount < 10) {
       playRound();
+      roundCount++;
     }
-    switchCurrentPlayer();
-    console.log(`Game over! Winner is ${currentPlayer.getName()}`);
+
+    if (gameboard.hasWinner()) {
+      switchCurrentPlayer();
+      console.log(`Game over! Winner is ${currentPlayer.getName()}`);
+    } else {
+      console.log("It's a tie.");
+    }
+    
   }
 
   return {
