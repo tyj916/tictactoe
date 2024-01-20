@@ -94,6 +94,11 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
   const players = [player1, player2];
   let currentPlayer = players[0].getMark() === "X" ? players[0] : players[1];
 
+    // if (gameboard.isGameover()) {
+    //   console.log(`Gameover. The winner is ${currentPlayer.getName()}`);
+    //   break;
+    // }
+
   const getCurrentPlayer = () => currentPlayer.getName();
 
   function displayCurrentPlayer() {
@@ -101,7 +106,7 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
   }
 
   function switchCurrentPlayer() {
-    currentPlayer = currentPlayer === players[0] ? players[1] : players[2];
+    currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
   }
 
   function playRound() {
@@ -113,11 +118,15 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
     gameboard.placeMark(selectedRow, selectedCol, currentPlayer.getMark());
     gameboard.displayGameboardConsole();
 
-    if (gameboard.isGameover()) {
-      console.log(`Gameover. The winner is ${currentPlayer.getName()}`);
-    }
-    
     switchCurrentPlayer();
+  }
+
+  function startGame() {
+    while (!gameboard.isGameover()) {
+      playRound();
+    }
+    switchCurrentPlayer();
+    console.log(`Game over! Winner is ${currentPlayer.getName()}`);
   }
 
   return {
@@ -125,6 +134,7 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
     displayCurrentPlayer,
     switchCurrentPlayer,
     playRound,
+    startGame,
   }
 }
 
