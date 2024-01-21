@@ -93,6 +93,7 @@ function createPlayer(name, mark) {
 function gameController(p1 = "Player 1", p2 = "Player 2") {
   const gameboard = createGameboard();
   gameboard.displayGameboardConsole();
+  let gameover = false;
 
   const player1 = createPlayer(p1, "X");
   const player2 = createPlayer(p2, "O");
@@ -101,6 +102,7 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
 
   const getCurrentPlayer = () => currentPlayer.getName();
   const getBoard = () => gameboard.getBoard();
+  const isGameover = () => gameover;
 
   function displayCurrentPlayer() {
     console.log(`It's ${currentPlayer.getName()}'s turn. Mark: ${currentPlayer.getMark()}`);
@@ -122,6 +124,7 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
     gameboard.displayGameboardConsole();
 
     if (gameboard.hasWinner()) {
+      gameover = true;
       announceWinner();
       return;
     }
@@ -136,6 +139,7 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
   return {
     getCurrentPlayer,
     getBoard,
+    isGameover,
     displayCurrentPlayer,
     switchCurrentPlayer,
     playRound,
@@ -151,7 +155,7 @@ const game = (function screenController() {
   const gameboard = gameContainer.querySelector("#gameboard");
 
   // bind events
-  gameboard.addEventListener('click', eventHandler);
+  gameboard.addEventListener('click', boardEventHandler);
 
   render();
 
@@ -176,7 +180,15 @@ const game = (function screenController() {
     });
   }
 
-  function eventHandler(event) {
+  function boardEventHandler(event) {
+    const target = event.target;
+
+    if (target.tagName !== 'BUTTON') return;
+
+    if (controller.isGameover()) {
+      return;
+    }
+
     const selectedRow = event.target.dataset.row;
     const selectedCol = event.target.dataset.col;
 
@@ -187,7 +199,7 @@ const game = (function screenController() {
   return {
     getboard: controller.getBoard(),
     render,
-    eventHandler,
+    boardEventHandler,
   }
 })();
 
