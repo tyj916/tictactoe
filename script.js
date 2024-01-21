@@ -110,37 +110,22 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
     currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
   }
 
-  function playRound() {
+  function playRound(selectedRow, selectedCol) {
     displayCurrentPlayer();
-    // get selection from curentplayer
-    let selectedRow = +prompt('Which row you want to place (0~2)');
-    let selectedCol = +prompt('Which column you want to place? (0~2)');
-
-    while (gameboard.getCell(selectedRow, selectedCol).hasMark()) {
-      console.log("The cell is selected. Please select again");
-      selectedRow = +prompt('Which row you want to place (0~2)');
-      selectedCol = +prompt('Which column you want to place? (0~2)');
-    }
 
     gameboard.placeMark(selectedRow, selectedCol, currentPlayer.getMark());
     gameboard.displayGameboardConsole();
 
+    if (gameboard.hasWinner()) {
+      announceWinner();
+      return;
+    }
+
     switchCurrentPlayer();
   }
 
-  function startGame() {
-    let roundCount = 1;
-    while (!gameboard.hasWinner() && roundCount < 10) {
-      playRound();
-      roundCount++;
-    }
-
-    if (gameboard.hasWinner()) {
-      switchCurrentPlayer();
-      console.log(`Game over! Winner is ${currentPlayer.getName()}`);
-    } else {
-      console.log("It's a tie.");
-    }
+  function announceWinner() {
+    console.log(`Game over! Winner is ${currentPlayer.getName()}`);
   }
 
   return {
@@ -149,7 +134,7 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
     displayCurrentPlayer,
     switchCurrentPlayer,
     playRound,
-    startGame,
+    announceWinner,
   }
 }
 
@@ -190,7 +175,8 @@ const game = (function screenController() {
     const selectedRow = event.target.dataset.row;
     const selectedCol = event.target.dataset.col;
 
-    console.log(selectedRow, selectedCol);
+    controller.playRound(selectedRow, selectedCol);
+    render();
   }
 
   return {
