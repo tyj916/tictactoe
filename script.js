@@ -113,6 +113,11 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
   function playRound(selectedRow, selectedCol) {
     displayCurrentPlayer();
 
+    if (gameboard.getCell(selectedRow, selectedCol).hasMark()) {
+      console.log("This cell is selected, please try again");
+      return;
+    }
+
     gameboard.placeMark(selectedRow, selectedCol, currentPlayer.getMark());
     gameboard.displayGameboardConsole();
 
