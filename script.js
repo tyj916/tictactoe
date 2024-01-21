@@ -13,17 +13,6 @@ function createGameboard(row = 3, col = 3) {
   const getBoard = () => gameboard;
   const getCell = (row, col) => gameboard[row][col];
 
-  const displayGameboardConsole = () => {
-    const arr = [];
-    for (let i = 0; i < row; i++) {
-      arr[i] = [];
-      for(let j = 0; j < col; j++) {
-        arr[i].push(gameboard[i][j].getMark());
-      }
-    }
-    console.log(arr);
-  };
-
   function placeMark(row, column, mark) {
     gameboard[row][column].setMark(mark);
   }
@@ -59,7 +48,6 @@ function createGameboard(row = 3, col = 3) {
   return {
     getBoard,
     getCell,
-    displayGameboardConsole,
     placeMark,
     hasWinner,
   }
@@ -165,8 +153,6 @@ const game = (function screenController() {
     const board = controller.getBoard();
     
     board.forEach((row, rowIndex) => {
-      const boardRow = document.createElement("div");
-      boardRow.classList.add("board-row");
       row.forEach((cell, colIndex) => {
         const cellButton = document.createElement("button");
         cellButton.classList.add("cell");
@@ -174,9 +160,8 @@ const game = (function screenController() {
         cellButton.dataset.col = colIndex;
         cellButton.textContent = cell.getMark();
 
-        boardRow.appendChild(cellButton);
+        gameboard.appendChild(cellButton);
       });
-      gameboard.appendChild(boardRow);
     });
   }
 
@@ -195,12 +180,10 @@ const game = (function screenController() {
     controller.playRound(selectedRow, selectedCol);
     render();
   }
-
-  return {
-    getboard: controller.getBoard(),
-    render,
-    boardEventHandler,
-  }
 })();
 
-const gb = createGameboard();
+/*
+
+Todo:
+1. announce tie if no winner
+2. haha */
