@@ -45,11 +45,16 @@ function createGameboard(row = 3, col = 3) {
     return allRows.map(matchThree).includes(true);
   }
 
+  function isTie() {
+    return gameboard.every(row => row.every(cell => cell.hasMark()));
+  }
+
   return {
     getBoard,
     getCell,
     placeMark,
     hasWinner,
+    isTie,
   }
 }
 
@@ -80,7 +85,6 @@ function createPlayer(name, mark) {
 // Rules: Only game controller, no game rules
 function gameController(p1 = "Player 1", p2 = "Player 2") {
   const gameboard = createGameboard();
-  gameboard.displayGameboardConsole();
   let gameover = false;
 
   const player1 = createPlayer(p1, "X");
@@ -109,9 +113,8 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
     }
 
     gameboard.placeMark(selectedRow, selectedCol, currentPlayer.getMark());
-    gameboard.displayGameboardConsole();
 
-    if (gameboard.hasWinner()) {
+    if (gameboard.hasWinner() || gameboard.isTie()) {
       gameover = true;
       announceWinner();
       return;
@@ -121,7 +124,11 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
   }
 
   function announceWinner() {
-    console.log(`Game over! Winner is ${currentPlayer.getName()}`);
+    if (gameboard.hasWinner()) {
+      console.log(`Game over! Winner is ${currentPlayer.getName()}`);
+    } else {
+      console.log("It's a tie");
+    }
   }
 
   return {
