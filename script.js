@@ -153,21 +153,32 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
   }
 }
 
-// const game = (function screenController() {
-//   const controller = gameController();
+const game = (function screenController() {
+  const controller = gameController();
 
-//   const gameContainer = document.querySelector("#tictactoe");
-//   const gameboard = gameContainer.querySelector("#gameboard");
+  const gameContainer = document.querySelector("#tictactoe");
+  const gameboard = gameContainer.querySelector("#gameboard");
 
-//   function render() {
-//     const board = controller.getBoard();
+  render();
+
+  function render() {
+    const board = controller.getBoard();
     
+    board.forEach(row => {
+      const boardRow = document.createElement("div");
+      boardRow.classList.add("board-row");
+      row.forEach(cell => {
+        const cellButton = document.createElement("button");
+        cellButton.classList.add("cell");
+        boardRow.appendChild(cellButton);
+      });
+      gameboard.appendChild(boardRow);
+    });
+  }
 
-//   }
-
-//   return {
-//     render,
-//   }
-// })();
+  return {
+    render,
+  }
+})();
 
 const gb = createGameboard();
