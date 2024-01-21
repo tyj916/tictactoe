@@ -161,6 +161,7 @@ const game = (function screenController() {
   const gameboard = gameContainer.querySelector("#gameboard");
 
   // bind events
+  gameboard.addEventListener('click', eventHandler);
 
   render();
 
@@ -169,12 +170,14 @@ const game = (function screenController() {
 
     const board = controller.getBoard();
     
-    board.forEach(row => {
+    board.forEach((row, rowIndex) => {
       const boardRow = document.createElement("div");
       boardRow.classList.add("board-row");
-      row.forEach(cell => {
+      row.forEach((cell, colIndex) => {
         const cellButton = document.createElement("button");
         cellButton.classList.add("cell");
+        cellButton.dataset.row = rowIndex;
+        cellButton.dataset.col = colIndex;
         cellButton.textContent = cell.getMark();
 
         boardRow.appendChild(cellButton);
@@ -183,13 +186,17 @@ const game = (function screenController() {
     });
   }
 
-  // function eventHandler() {
-    
-  // }
+  function eventHandler(event) {
+    const selectedRow = event.target.dataset.row;
+    const selectedCol = event.target.dataset.col;
+
+    console.log(selectedRow, selectedCol);
+  }
 
   return {
     getboard: controller.getBoard(),
     render,
+    eventHandler,
   }
 })();
 
