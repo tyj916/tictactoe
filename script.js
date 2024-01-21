@@ -156,12 +156,17 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
 const game = (function screenController() {
   const controller = gameController();
 
+  // cache DOM
   const gameContainer = document.querySelector("#tictactoe");
   const gameboard = gameContainer.querySelector("#gameboard");
+
+  // bind events
 
   render();
 
   function render() {
+    gameboard.textContent = '';
+
     const board = controller.getBoard();
     
     board.forEach(row => {
@@ -170,13 +175,20 @@ const game = (function screenController() {
       row.forEach(cell => {
         const cellButton = document.createElement("button");
         cellButton.classList.add("cell");
+        cellButton.textContent = cell.getMark();
+
         boardRow.appendChild(cellButton);
       });
       gameboard.appendChild(boardRow);
     });
   }
 
+  // function eventHandler() {
+    
+  // }
+
   return {
+    getboard: controller.getBoard(),
     render,
   }
 })();
