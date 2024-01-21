@@ -10,7 +10,8 @@ function createGameboard(row = 3, col = 3) {
     }
   }
 
-  const getGameboard = () => gameboard;
+  const getBoard = () => gameboard;
+  const getCell = (row, col) => gameboard[row][col];
 
   const displayGameboardConsole = () => {
     const arr = [];
@@ -56,7 +57,8 @@ function createGameboard(row = 3, col = 3) {
   }
 
   return {
-    getGameboard,
+    getBoard,
+    getCell,
     displayGameboardConsole,
     placeMark,
     hasWinner,
@@ -98,6 +100,7 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
   let currentPlayer = players[0].getMark() === "X" ? players[0] : players[1];
 
   const getCurrentPlayer = () => currentPlayer.getName();
+  const getBoard = () => gameboard.getBoard();
 
   function displayCurrentPlayer() {
     console.log(`It's ${currentPlayer.getName()}'s turn. Mark: ${currentPlayer.getMark()}`);
@@ -113,7 +116,7 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
     let selectedRow = +prompt('Which row you want to place (0~2)');
     let selectedCol = +prompt('Which column you want to place? (0~2)');
 
-    while (gameboard.getGameboard()[selectedRow][selectedCol].hasMark()) {
+    while (gameboard.getCell(selectedRow, selectedCol).hasMark()) {
       console.log("The cell is selected. Please select again");
       selectedRow = +prompt('Which row you want to place (0~2)');
       selectedCol = +prompt('Which column you want to place? (0~2)');
@@ -138,11 +141,11 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
     } else {
       console.log("It's a tie.");
     }
-    
   }
 
   return {
     getCurrentPlayer,
+    getBoard,
     displayCurrentPlayer,
     switchCurrentPlayer,
     playRound,
@@ -150,7 +153,21 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
   }
 }
 
+// const game = (function screenController() {
+//   const controller = gameController();
+
+//   const gameContainer = document.querySelector("#tictactoe");
+//   const gameboard = gameContainer.querySelector("#gameboard");
+
+//   function render() {
+//     const board = controller.getBoard();
+    
+
+//   }
+
+//   return {
+//     render,
+//   }
+// })();
 
 const gb = createGameboard();
-const player = createPlayer("Player 1", "X");
-const game = gameController();
