@@ -6,6 +6,17 @@
 
 body {
   height: 100vh;
+  font-size: 1.5rem;
+}
+
+button {
+  padding: 8px 24px;
+  font-size: 1.5rem;
+  border-radius: 8px;
+}
+
+ul {
+  list-style-type: none;
 }
 
 header {
@@ -13,7 +24,6 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.5rem;
   border-bottom: 2px solid black;
 }
 
@@ -28,8 +38,6 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-
-  font-size: 1.5rem;
 }
 
 #gameboard {
@@ -44,4 +52,32 @@ header {
   border: 1px solid black;
 
   font-size: 2rem;
+  border-radius: 0;
+}
+
+#player-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+#player-info li {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#player-info input {
+  padding: 8px;
+  font-size: 1rem;
+}
+
+.buttons {
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
