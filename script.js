@@ -85,13 +85,12 @@ function createPlayer(name, mark) {
 // Rules: Only game controller, no game rules
 function gameController(p1 = "Player 1", p2 = "Player 2") {
   const gameboard = createGameboard();
-  let message = "";
 
   const player1 = createPlayer(p1, "X");
   const player2 = createPlayer(p2, "O");
   const players = [player1, player2];
   let currentPlayer = players[0].getMark() === "X" ? players[0] : players[1];
-  message = `It's ${currentPlayer.getName()}'s turn. Mark: ${currentPlayer.getMark()}`;
+  let message = `It's ${currentPlayer.getName()}'s turn. Mark: ${currentPlayer.getMark()}`;
 
   const getCurrentPlayer = () => currentPlayer.getName();
   const getBoard = () => gameboard.getBoard();
@@ -124,33 +123,28 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
     getCurrentPlayer,
     getBoard,
     getMessage,
-    switchCurrentPlayer,
     playRound,
   }
 }
 
 const game = (function screenController() {
-  const controller = gameController();
-  const board = controller.getBoard();
+  let controller;
+  let board;
 
   // cache DOM
   const gameContainer = document.querySelector("#tictactoe");
   const gameboard = gameContainer.querySelector("#gameboard");
   const gameMessage = gameContainer.querySelector("#game-message");
+  const startButton = gameContainer.querySelector("#start");
 
   // bind events
   gameboard.addEventListener('click', boardEventHandler);
-
-  render();
+  startButton.addEventListener('click', startNewGame);
 
   function boardEventHandler(event) {
     const target = event.target;
 
     if (target.tagName !== 'BUTTON') return;
-
-    // if (board.hasWinner() || board.isTie()) {
-    //   return;
-    // }
 
     const selectedRow = event.target.dataset.row;
     const selectedCol = event.target.dataset.col;
@@ -176,5 +170,18 @@ const game = (function screenController() {
         gameboard.appendChild(cellButton);
       });
     });
+  }
+
+  function startNewGame() {
+    const player1 = gameContainer.querySelector("#player-1");
+    const player2 = gameContainer.querySelector("#player-2");
+
+    const player1Name = player1.value ? player1.value : player1.placeholder;
+    const player2Name = player2.value ? player2.value : player2.placeholder;
+
+    controller = gameController(player1Name, player2Name);
+    board = controller.getBoard();
+
+    render();
   }
 })();
