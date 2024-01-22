@@ -85,7 +85,6 @@ function createPlayer(name, mark) {
 // Rules: Only game controller, no game rules
 function gameController(p1 = "Player 1", p2 = "Player 2") {
   const gameboard = createGameboard();
-  let gameover = false;
 
   const player1 = createPlayer(p1, "X");
   const player2 = createPlayer(p2, "O");
@@ -94,10 +93,15 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
 
   const getCurrentPlayer = () => currentPlayer.getName();
   const getBoard = () => gameboard.getBoard();
-  const isGameover = () => gameover;
 
-  function displayCurrentPlayer() {
-    console.log(`It's ${currentPlayer.getName()}'s turn. Mark: ${currentPlayer.getMark()}`);
+  function gameMessage() {
+    if (gameboard.hasWinner()) {
+      return `Game over! Winner is ${currentPlayer.getName()}`;
+    } else if (gameboard.isTie()) {
+      return "Game over! It's a tie!";
+    } else {
+      return `It's ${currentPlayer.getName()}'s turn. Mark: ${currentPlayer.getMark()}`;
+    }
   }
 
   function switchCurrentPlayer() {
@@ -105,8 +109,6 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
   }
 
   function playRound(selectedRow, selectedCol) {
-    displayCurrentPlayer();
-
     if (gameboard.getCell(selectedRow, selectedCol).hasMark()) {
       console.log("This cell is selected, please try again");
       return;
@@ -114,50 +116,53 @@ function gameController(p1 = "Player 1", p2 = "Player 2") {
 
     gameboard.placeMark(selectedRow, selectedCol, currentPlayer.getMark());
 
-    if (gameboard.hasWinner() || gameboard.isTie()) {
-      gameover = true;
-      announceWinner();
-      return;
-    }
-
     switchCurrentPlayer();
-  }
-
-  function announceWinner() {
-    if (gameboard.hasWinner()) {
-      console.log(`Game over! Winner is ${currentPlayer.getName()}`);
-    } else {
-      console.log("It's a tie");
-    }
   }
 
   return {
     getCurrentPlayer,
     getBoard,
-    isGameover,
-    displayCurrentPlayer,
+    gameMessage,
     switchCurrentPlayer,
     playRound,
-    announceWinner,
   }
 }
 
 const game = (function screenController() {
   const controller = gameController();
+  const board = controller.getBoard();
 
   // cache DOM
   const gameContainer = document.querySelector("#tictactoe");
   const gameboard = gameContainer.querySelector("#gameboard");
+  const gameMessage = gameContainer.querySelector("#game-message");
 
   // bind events
   gameboard.addEventListener('click', boardEventHandler);
 
   render();
 
+  function boardEventHandler(event) {
+    const target = event.target;
+
+    if (target.tagName !== 'BUTTON') return;
+
+    // if (board.hasWinner() || board.isTie()) {
+    //   return;
+    // }
+
+    const selectedRow = event.target.dataset.row;
+    const selectedCol = event.target.dataset.col;
+
+    controller.playRound(selectedRow, selectedCol);
+    render();
+  }
+
   function render() {
+    gameMessage.textContent = '';
     gameboard.textContent = '';
 
-    const board = controller.getBoard();
+    gameMessage.textContent = controller.gameMessage();
     
     board.forEach((row, rowIndex) => {
       row.forEach((cell, colIndex) => {
@@ -171,26 +176,4 @@ const game = (function screenController() {
       });
     });
   }
-
-  function boardEventHandler(event) {
-    const target = event.target;
-
-    if (target.tagName !== 'BUTTON') return;
-
-    if (controller.isGameover()) {
-      return;
-    }
-
-    const selectedRow = event.target.dataset.row;
-    const selectedCol = event.target.dataset.col;
-
-    controller.playRound(selectedRow, selectedCol);
-    render();
-  }
 })();
-
-/*
-
-Todo:
-1. announce tie if no winner
-2. haha */
