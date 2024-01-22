@@ -136,10 +136,13 @@ const game = (function screenController() {
   const gameboard = gameContainer.querySelector("#gameboard");
   const gameMessage = gameContainer.querySelector("#game-message");
   const startButton = gameContainer.querySelector("#start");
+  const restartButton = gameContainer.querySelector("#restart");
+  const playerInfo = gameContainer.querySelector("#player-info");
 
   // bind events
   gameboard.addEventListener('click', boardEventHandler);
   startButton.addEventListener('click', startNewGame);
+  restartButton.addEventListener('click', restart);
 
   function boardEventHandler(event) {
     const target = event.target;
@@ -182,6 +185,18 @@ const game = (function screenController() {
     controller = gameController(player1Name, player2Name);
     board = controller.getBoard();
 
+    playerInfo.classList.toggle('hide');
+    startButton.classList.toggle('hide');
+    restartButton.classList.toggle('hide');
+
     render();
+  }
+
+  function restart() {
+    playerInfo.classList.toggle('hide');
+    startButton.classList.toggle('hide');
+    restartButton.classList.toggle('hide');
+    gameMessage.textContent = '';
+    gameboard.textContent = '';
   }
 })();
