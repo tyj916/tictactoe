@@ -85,44 +85,45 @@ function createPlayer(name, mark) {
 // Rules: Only game controller, no game rules
 function gameController(p1 = "Player 1", p2 = "Player 2") {
   const gameboard = createGameboard();
+  let message = "";
 
   const player1 = createPlayer(p1, "X");
   const player2 = createPlayer(p2, "O");
   const players = [player1, player2];
   let currentPlayer = players[0].getMark() === "X" ? players[0] : players[1];
+  message = `It's ${currentPlayer.getName()}'s turn. Mark: ${currentPlayer.getMark()}`;
 
   const getCurrentPlayer = () => currentPlayer.getName();
   const getBoard = () => gameboard.getBoard();
-
-  function gameMessage() {
-    if (gameboard.hasWinner()) {
-      return `Game over! Winner is ${currentPlayer.getName()}`;
-    } else if (gameboard.isTie()) {
-      return "Game over! It's a tie!";
-    } else {
-      return `It's ${currentPlayer.getName()}'s turn. Mark: ${currentPlayer.getMark()}`;
-    }
-  }
+  const getMessage = () => message;
 
   function switchCurrentPlayer() {
     currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
   }
 
   function playRound(selectedRow, selectedCol) {
+    if (gameboard.hasWinner() || gameboard.isTie()) return;
     if (gameboard.getCell(selectedRow, selectedCol).hasMark()) {
-      console.log("This cell is selected, please try again");
+      message = "This cell is selected. Please try again."
       return;
     }
 
     gameboard.placeMark(selectedRow, selectedCol, currentPlayer.getMark());
 
-    switchCurrentPlayer();
+    if (gameboard.hasWinner()) {
+      message = `Game over! Winner is ${currentPlayer.getName()}`;
+    } else if (gameboard.isTie()) {
+      message = "Game over! It's a tie!";
+    } else {
+      switchCurrentPlayer();
+      message = `It's ${currentPlayer.getName()}'s turn. Mark: ${currentPlayer.getMark()}`;
+    }
   }
 
   return {
     getCurrentPlayer,
     getBoard,
-    gameMessage,
+    getMessage,
     switchCurrentPlayer,
     playRound,
   }
@@ -162,7 +163,7 @@ const game = (function screenController() {
     gameMessage.textContent = '';
     gameboard.textContent = '';
 
-    gameMessage.textContent = controller.gameMessage();
+    gameMessage.textContent = controller.getMessage();
     
     board.forEach((row, rowIndex) => {
       row.forEach((cell, colIndex) => {
